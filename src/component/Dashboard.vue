@@ -9,12 +9,6 @@
           width="200px">
           <template slot="header" slot-scope="scope">
             <el-select v-model="typeOption.value" style="width: 100px">
-              {{belongOption.data[0]}}
-              <el-option
-                v-show="false"
-                :label="' saaaadadasd'"
-                :value="0">
-              </el-option>
               <el-option
                 v-for="item in typeOption.data"
                 :key="item.value"
@@ -24,17 +18,19 @@
             </el-select>
           </template>
         </el-table-column>
-        {{labeldata}}
         <el-table-column
           prop="title"
           width="200px">
           <template slot="header" slot-scope="scope">
+<!--            {value: 0, label: '所有'}-->
             <el-select v-model="belongOption.value" style="width: 100px" @visible-change="belongOptionChange">
               <el-option
 
-                :key="999999"
-                :value="999999"
-                :label="labeldata">
+                :key="0"
+                :value="0"
+                :label="'归属'"
+               >
+                所有
               </el-option>
               <el-option
 
@@ -154,7 +150,7 @@ export default {
       },
       belongOption: {
         value: 0,
-        data: [{value: 0, label: '所有'}, {value: 1, label: 'test'},]
+        data: [ {value: 1, label: 'test'},]
       },
       tableData: [{title: "test"}],
       flags:false,
@@ -162,28 +158,13 @@ export default {
     };
   },
   computed:{
-    labeldata:function(){
-      return "43333333"
-      if(this.flags&&this.belongOption.value==999999){
-        return  "xxxxx"
-      }
-      if(!this.flags){
-        return "bbbbb"
-      }
-      return "xxxxxx"
-    }
+
   },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
     },
     belongOptionChange: function (b) {
-      console.log(b)
-        if(b){
-          this.flags=true
-        }
-
-
 
     }
   }
