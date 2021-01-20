@@ -1,10 +1,18 @@
 <template>
-<h1>doc</h1>
+  <div >
+    <mavon-editor v-model="value"/>
+  </div>
+
 </template>
 
 <script>
 export default {
-  name: "Doc"
+  name: "Doc",
+  data() {
+    return {
+      value: "",
+    }
+  },
 }
 </script>
 

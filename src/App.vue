@@ -19,6 +19,7 @@
           </el-submenu>
           <el-menu-item index="3" disabled>消息中心</el-menu-item>
           <el-menu-item index="4"><a href="https://www.ele.me" target="_blank">订单管理</a></el-menu-item>
+          <el-button class="el-icon-document" type="primary" style="float: right" v-if="$route.meta.show">保存</el-button>
         </el-menu>
 
       </el-header>
@@ -28,11 +29,12 @@
 
           <el-col :span="12" style="width: 200px">
             <el-menu
-              default-active="2"
+              :default-active="$route.path"
               class="el-menu-vertical-demo"
+              router="true"
               @open="handleOpen"
               @close="handleClose">
-              <el-menu-item index="/dashboard">
+              <el-menu-item index="/">
                 <i class="el-icon-monitor"></i>
                 <span slot="title">工作台</span>
               </el-menu-item>
@@ -93,32 +95,3 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
-</style>

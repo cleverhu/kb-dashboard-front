@@ -5,6 +5,8 @@ import VueResource from 'vue-resource'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
 
 Vue.config.debug = true;
 
@@ -12,7 +14,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 Vue.use(ElementUI);
-
+Vue.use(mavonEditor)
 
 import dashboard from './component/Dashboard.vue'
 import doc from './component/Doc.vue'
@@ -23,7 +25,7 @@ const router = new VueRouter({
   base: __dirname,
   routes: [
     {
-      path: '/dashboard',
+      path: '/',
       component: dashboard
     },
     {
@@ -32,7 +34,10 @@ const router = new VueRouter({
     },
     {
       path: '/doc',
-      component: doc
+      component: doc,
+      meta: {
+        show: true,
+      }
     },
   ]
 })
