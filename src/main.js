@@ -17,8 +17,10 @@ Vue.use(ElementUI);
 Vue.use(mavonEditor)
 
 import dashboard from './component/Dashboard.vue'
-import doc from './component/Doc.vue'
+import edit from './component/Edit.vue'
 import kbList from './component/KbList.vue'
+import manger from './component/Manger.vue'
+import detail from './component/Detail'
 
 const router = new VueRouter({
   mode: 'hash',
@@ -33,12 +35,26 @@ const router = new VueRouter({
       component: kbList
     },
     {
-      path: '/doc',
-      component: doc,
+      path: '/edit',
+      component: edit,
+      name: "edit",
       meta: {
         show: true,
       }
     },
+    {
+      path: '/manger',
+      component: manger,
+      name: "manger",
+    },
+    {
+      path: '/detail',
+      component: detail,
+      name: "detail",
+      meta: {
+        document: true,
+      }
+    }
   ]
 })
 

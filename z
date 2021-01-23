@@ -1,0 +1,10 @@
+npm run build
+tar -czvf test.tar.gz dist
+sshpass -p 'Hu928973510!' scp test.tar.gz ruler@101.132.107.3:/home/ruler/
+sshpass -p 'Hu928973510!' ssh ruler@101.132.107.3 <<end
+tar -xzvf test.tar.gz
+rm test.tar.gz
+mv dist/* kbdashboard/html/dist
+rm -rf dist
+exit
+end
