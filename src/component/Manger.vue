@@ -192,6 +192,10 @@ export default {
     },
   },
   mounted() {
+    this.kb_id = this.$route.query.id
+    if (this.kb_id !== undefined) {
+      this.getGroupInfo(this.kb_id)
+    }
   },
   watch: {
     $route: {
