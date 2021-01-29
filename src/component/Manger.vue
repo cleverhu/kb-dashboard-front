@@ -27,7 +27,7 @@
               >
               </el-tree>
               <el-button type="primary"
-                         @click="groupInfo.group_id=0;groupInfo.label='';kbInfo={};showAddAndDelete=false">顶级目录
+                         @click="groupInfo={};kbInfo={};showAddAndDelete=false">顶级目录
               </el-button>
             </el-aside>
 
@@ -39,13 +39,13 @@
                 <el-form-item label="父标题">
                   <el-input type="text" v-model="groupInfo.label" :disabled="false"></el-input>
                 </el-form-item>
-                <el-form-item label="子标题">
+                <el-form-item label="子标题" v-if="showAddAndDelete">
                   <el-input type="text" v-model="groupInfo.sonTitle" :disabled="false"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="success">添加子节点</el-button>
-                  <el-button type="warning" v-if="showAddAndDelete">修改父节点</el-button>
-                  <el-button type="danger" v-if="showAddAndDelete">删除父节点</el-button>
+                  <el-button type="success" @click="addGroup">添加子节点</el-button>
+                  <el-button type="warning" v-if="showAddAndDelete" @click="updateGroup">修改父节点</el-button>
+                  <el-button type="danger" v-if="showAddAndDelete" @click="deleteGroup">删除父节点</el-button>
                 </el-form-item>
               </el-form>
 
@@ -75,9 +75,10 @@ export default {
         children: 'children',
         label: 'label'
       },
-      groupInfo: {group_id: 0, label: "", sonTitle: ""},
+      groupInfo: {group_id: 0, label: "", sonTitle: "", kb_id: 0},
       showAddAndDelete: false,
       kb_id: 0,
+      beforePath: "",
     }
   },
   methods: {
@@ -138,23 +139,70 @@ export default {
       console.log(dropType)
     },
     getGroupInfo: function (kbID) {
-      this.axios.get("http://dashboard-back.deeplythink.com/group/"+kbID)
-      .then(res=>{
-        this.docInfo = res.data.result
-      })
+      this.axios.get("http://dashboard-back.deeplythink.com/group/" + kbID)
+        .then(res => {
+          this.docInfo = res.data.result
+        })
+    },
+    addGroup: function () {
+      //console.log(JSON.stringify(this.getGroupInfo))
+      if (this.groupInfo.group_id === undefined) {
+        this.groupInfo.group_id = 0
+        this.groupInfo.kb_id = this.kb_id
+        this.groupInfo.sonTitle = this.groupInfo.label
+      }
+      this.axios.put("http://dashboard-back.deeplythink.com/group", JSON.stringify(this.groupInfo))
+        .then(res => {
+          alert(res.data.result)
+          this.getGroupInfo(this.kb_id)
+        })
+        .catch(err => {
+          alert(err.error)
+        })
+    },
+    deleteGroup: function () {
+      if (this.groupInfo.group_id === undefined) {
+        alert("删除错误")
+      }
+      if (confirm("是否确定要删除分组:" + this.groupInfo.label)) {
+        this.axios.delete("http://dashboard-back.deeplythink.com/group/" + this.groupInfo.group_id)
+          .then(res => {
+            alert(res.data.result)
+            this.getGroupInfo(this.kb_id)
+          })
+          .catch(err => {
+            alert(err.error)
+          })
+      }
+    },
+    updateGroup: function () {
+      if (this.groupInfo.group_id === undefined) {
+        alert("更新错误")
+      }
+
+      this.axios.post("http://dashboard-back.deeplythink.com/group", JSON.stringify(this.groupInfo))
+        .then(res => {
+          alert(res.data.result)
+          this.getGroupInfo(this.kb_id)
+        })
+        .catch(err => {
+          alert(err.error)
+        })
+
     },
   },
   mounted() {
-    },
+  },
   watch: {
     $route: {
       handler(val) {
+        this.groupInfo = {}
+        this.kbInfo = {}
         this.kb_id = this.$route.query.id
         if (this.kb_id !== undefined) {
           this.getGroupInfo(this.kb_id)
         }
-        //alert(this.kb_id)
-        //this.$forceUpdate()
+        //this.beforePath = val.path
       },
       // 深度观察监听
       deep: true
