@@ -44,12 +44,15 @@
       align="center"
     >
       <template slot-scope="scope">
-        <el-button type="success" size="mini" @click="mangerKb(scope.row)">
+        <el-button type="success" size="mini" @click.native="viewKb(scope.row)">
+          查看
+        </el-button>
+        <el-button type="success" v-if="scope.row.can_edit==='Y'" size="mini" @click="mangerKb(scope.row)">
           管理
         </el-button>
-        <el-button type="success" v-if="scope.row.can_edit==='Y'" size="mini" @click="editKb(scope.row)">
-          添加文档
-        </el-button>
+<!--        <el-button type="success" v-if="scope.row.can_edit==='Y'" size="mini" @click="editKb(scope.row)">-->
+<!--          添加文档-->
+<!--        </el-button>-->
       </template>
 
     </el-table-column>
