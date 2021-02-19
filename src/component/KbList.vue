@@ -64,6 +64,14 @@
       align="center"
     >
     </el-table-column>
+    <el-table-column
+      prop="kind"
+      label="知识库类型"
+      sortable
+      width="200"
+      align="center"
+    >
+    </el-table-column>
   </el-table>
 </template>
 
@@ -85,7 +93,14 @@ export default {
       this.$router.push({name: 'edit', query: {id: kb.kb_id}})
     },
     mangerKb: function (kb) {
-      this.$router.push({name: 'manger', query: {id: kb.kb_id}})
+      //console.log(kb)
+      if (kb.kind === "文档知识库") {
+        this.$router.push({name: 'manger', query: {id: kb.kb_id}})
+      } else {
+        //alert("123")
+        this.$router.push({name: 'mangerSourceKb', query: {id: kb.kb_id}})
+      }
+
     },
     viewKb: function (kb) {
       //alert(kb.kb_name)
@@ -93,9 +108,9 @@ export default {
     },
     getKbs: function () {
       this.axios.post("http://dashboard-back.deeplythink.com/kns", JSON.stringify(this.pageObj))
-      .then(res=>{
-        this.tableData = res.data.result
-      })
+        .then(res => {
+          this.tableData = res.data.result
+        })
     }
   },
   mounted() {

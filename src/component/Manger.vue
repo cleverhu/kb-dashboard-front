@@ -193,6 +193,7 @@ export default {
   },
   mounted() {
     this.kb_id = this.$route.query.id
+    this.groupInfo.kb_id = this.kb_id
     if (this.kb_id !== undefined) {
       this.getGroupInfo(this.kb_id)
     }
@@ -200,6 +201,7 @@ export default {
   watch: {
     $route: {
       handler(val) {
+       // console.log(val)
         this.groupInfo = {}
         this.kbInfo = {}
         this.kb_id = this.$route.query.id

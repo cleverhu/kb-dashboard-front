@@ -22,6 +22,41 @@
           <el-button class="el-icon-document" type="primary" style="float: right" v-if="$route.meta.show" @click="save">
             保存
           </el-button>
+          <el-button class="el-icon-document" type="primary" style="float: right;margin-right: 10%"
+                     v-if="$route.meta.isKbList"
+                     @click="showAddKbDialog=true">
+            新建知识库
+          </el-button>
+
+          <el-dialog title="添加知识库" :visible.sync="showAddKbDialog" style="width: 700px;margin-left: 20%" :modal="false"
+                     :close-on-click-modal="false">
+            <el-form>
+              <el-form-item label="知识库类型"><br>
+                <el-select v-model="kbInfoData.kb_kind_id">
+                  <el-option
+                    v-for="item in kbKindObj.options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="知识库标题">
+                <el-input v-model="kbInfoData.kb_name"></el-input>
+              </el-form-item>
+              <el-form-item label="知识库描述">
+                <el-input v-model="kbInfoData.kb_desc"></el-input>
+              </el-form-item>
+              <el-form-item label="是否私有">
+                <el-checkbox v-model="kbInfoData.is_private"></el-checkbox>
+              </el-form-item>
+
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="showAddKbDialog = false">取 消</el-button>
+              <el-button type="primary" @click="addkb">添 加</el-button>
+            </div>
+          </el-dialog>
         </el-menu>
 
       </el-header>
@@ -61,6 +96,7 @@
 
 <script>
 import edit from './component/Edit.vue'
+import axios from 'axios'
 
 export default {
   name: 'app',
@@ -70,15 +106,48 @@ export default {
   data() {
     return {
       docContent: "",
+      showAddKbDialog: false,
+      kbKindObj: {
+        options: [{
+          value: 1,
+          label: '文档知识库'
+        }, {
+          value: 2,
+          label: '资源知识库'
+        }]
+      },
+      kbInfoData: {kb_kind_id: 1, kb_name: "", kb_desc: "", is_private: false}
     }
   },
   methods: {
     save: function () {
-      alert("当前路径:"+this.$route.fullPath + "\n当前内容:" + this.docContent)
+      alert("当前路径:" + this.$route.fullPath + "\n当前内容:" + this.docContent)
     },
     getDocContent: function (val) {
       this.docContent = val
-    }
-  }
+    },
+    addkb: function () {
+      if (this.kbInfoData.is_private) {
+        this.kbInfoData.is_private = "Y"
+      } else {
+        this.kbInfoData.is_private = "N"
+      }
+      axios.put("http://dashboard-back.deeplythink.com/kns", JSON.stringify(this.kbInfoData))
+        .then(res => {
+          alert(res.data.result)
+          this.showAddKbDialog = false
+          this.$router.go(0)
+        })
+        .catch(err => {
+          alert(err.error)
+        })
+    },
+  },
 }
 </script>
+
+<style>
+.el-dialog__body {
+  padding: 0 20px !important;
+}
+</style>

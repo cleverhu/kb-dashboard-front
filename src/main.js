@@ -51,6 +51,7 @@ import dashboard from './component/Dashboard.vue'
 import edit from './component/Edit.vue'
 import kbList from './component/KbList.vue'
 import manger from './component/Manger.vue'
+import mangerSourceKb from './component/MangerSourceKb.vue'
 import detail from './component/Detail'
 
 const router = new VueRouter({
@@ -63,7 +64,10 @@ const router = new VueRouter({
     },
     {
       path: '/kbList',
-      component: kbList
+      component: kbList,
+      meta: {
+        isKbList: true,
+      }
     },
     {
       path: '/edit',
@@ -77,6 +81,11 @@ const router = new VueRouter({
       path: '/manger',
       component: manger,
       name: "manger",
+    },
+    {
+      path: '/manger-source-kb',
+      component: mangerSourceKb,
+      name: "mangerSourceKb",
     },
     {
       path: '/detail',
